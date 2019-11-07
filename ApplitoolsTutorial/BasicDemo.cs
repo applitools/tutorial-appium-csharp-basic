@@ -1,7 +1,7 @@
-﻿using Applitools;
-using Applitools.Appium;
+﻿using Applitools.Appium;
 using NUnit.Framework;
-using OpenQA.Selenium;
+using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Enums;
 using OpenQA.Selenium.Remote;
 using System;
 
@@ -22,18 +22,18 @@ namespace ApplitoolsTutorial
             eyes = new Eyes();
 
             // Set the desired capabilities.
-            DesiredCapabilities caps = new DesiredCapabilities();
-            caps.SetCapability("deviceName", "Samsung Galaxy S9 WQHD GoogleAPI Emulator");
-            caps.SetCapability("deviceOrientation", "portrait");
-            caps.SetCapability("browserName", "");
-            caps.SetCapability("platformVersion", "9.0");
-            caps.SetCapability("platformName", "Android");
-            caps.SetCapability("app", "https://applitools.bintray.com/Examples/eyes-hello-world.apk");
-            caps.SetCapability("username", Environment.GetEnvironmentVariable("SAUCE_USERNAME"));
-            caps.SetCapability("accesskey", Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY"));
-            caps.SetCapability("name", "Android Demo");
+            AppiumOptions options = new AppiumOptions();
+            options.AddAdditionalCapability(MobileCapabilityType.DeviceName, "Samsung Galaxy S9 WQHD GoogleAPI Emulator");
+            options.AddAdditionalCapability(MobileCapabilityType.PlatformVersion, "9.0");
+            options.AddAdditionalCapability(MobileCapabilityType.PlatformName, "Android");
+            options.AddAdditionalCapability(MobileCapabilityType.App, "https://applitools.bintray.com/Examples/eyes-hello-world.apk");
+            options.AddAdditionalCapability("deviceOrientation", "portrait");
 
-            driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com/wd/hub"), caps);
+            options.AddAdditionalCapability("username", Environment.GetEnvironmentVariable("SAUCE_USERNAME"));
+            options.AddAdditionalCapability("accesskey", Environment.GetEnvironmentVariable("SAUCE_ACCESS_KEY"));
+            options.AddAdditionalCapability("name", "Android Demo");
+
+            driver = new RemoteWebDriver(new Uri("http://ondemand.saucelabs.com/wd/hub"), options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
 
             // Start visual UI testing.
